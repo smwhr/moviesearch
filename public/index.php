@@ -31,17 +31,7 @@ if(isset($url_composants[2])){
 
 try{
 
-  list($controller, $action) = MovieSearch\Router::load($action_name,$controller_name);
-
-}catch(MovieSearch\Exception\ControllerNotFound $e){
-  $controller = new ErrorController();
-  $action = "e404";
-  $argument = $e;
-
-}catch(MovieSearch\Exception\ActionNotFound $e){
-  $controller = new Controller\ErrorController();
-  $action = "e404";
-  $argument = $e;
+  list($controller, $action) = MovieSearch\Router::load($controller_name,$action_name);
 
 }catch(Exception $e){
   $controller = new Controller\ErrorController();
