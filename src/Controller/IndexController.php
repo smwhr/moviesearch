@@ -10,6 +10,8 @@ class IndexController{
 
   public function searchAction(){
     //se connecter à la bdd
+    header('Content-Type: application/json');
+    
     $config = new \Doctrine\DBAL\Configuration();
     $connectionParams = array(
       'url' => 'mysql://supinternet:supinternet21@127.0.0.1/supinternet_moviesearch',
@@ -23,6 +25,6 @@ class IndexController{
     $stmt->execute();
     //renvoyer les films qu'on a trouvés
     $films = $stmt->fetchAll();
-    return json_encode($films);
+    return json_encode(["films" => $films]);
   }
 }
