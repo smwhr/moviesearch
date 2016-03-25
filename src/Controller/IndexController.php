@@ -5,13 +5,13 @@ use Doctrine\DBAL\Query\QueryBuilder;
 
 class IndexController{
   public function indexAction(){
-      //include view
+      include("search.php");
   }
 
   public function searchAction(){
     //se connecter à la bdd
     header('Content-Type: application/json');
-    
+
     $config = new \Doctrine\DBAL\Configuration();
     $connectionParams = array(
       'url' => 'mysql://supinternet:supinternet21@127.0.0.1/supinternet_moviesearch',
