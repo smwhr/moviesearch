@@ -18,11 +18,11 @@ Barême
 - La recherche s'effectue en Ajax au clic : 2 pts 
 - La réponse tient compte des champs remplis : 2pts x 4
 - La réponse ne tient pas compte des champs vides : 2pts
-- Rajouter le prénom/nom du réalisateur dans une colonne du chams de recherche : 3pts
+- Rajouter le prénom/nom du réalisateur dans une colonne du chams de recherche : 2pts
 - Rajouter un champs de recherche libre unique pour trouver par réalisateur : 4pts
 - Chercher par le genre du réalisateur : 2pts
 
-- Bonus : paginer à 10 résultats par page (toujours en AJAX)
+- Bonus : paginer à 10 résultats par page (toujours en AJAX) : 5pts
 
 
 Contraintes
