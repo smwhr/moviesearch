@@ -1,0 +1,2 @@
+<?php
+$db_param = 'mysql://user:password@127.0.0.1/db_name?charset=utf8mb4';

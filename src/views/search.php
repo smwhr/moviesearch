@@ -8,12 +8,15 @@
 
 <!-- Optional theme -->
 <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap-theme.min.css" integrity="sha384-fLW2N01lMqjakBkx3l/M9EahuwpSfeNvV63J5ezn3uZzapT0u7EYsXMjQV+0En5r" crossorigin="anonymous">
+
+<script src="http://ajax.googleapis.com/ajax/libs/jquery/2.2.2/jquery.min.js"></script>
+
 </head>
 <body>
 <div class="row">
   <div class="col-md-12">
     <div class="well">
-      <form class="form-horizontal">
+      <form class="form-horizontal" id="movieSearchForm" method="POST" action="/index/search">
         <div class="form-group">
           <label for="titleInput" class="col-sm-2 control-label">Titre</label>
           <div class="col-sm-10">
@@ -24,11 +27,11 @@
           <label for="durationInput" class="col-sm-2 control-label">Durée</label>
           <div class="col-sm-10">
             <select name="duration" class="form-control" id="titleInput">
-              <option>Tous</option>
-              <option>Moins d'une heure</option>
-              <option>Entre 1h et 1h30</option>
-              <option>Entre 1h30 et 2h30</option>
-              <option>Plus de 2h30</option>
+              <option value="">Tous</option>
+              <option value="0-3600">Moins d'une heure</option>
+              <option value="3600-5400">Entre 1h et 1h30</option>
+              <option value="5400-9000">Entre 1h30 et 2h30</option>
+              <option value="9000">Plus de 2h30</option>
             </select>
           </div>
         </div>
@@ -48,6 +51,16 @@
           </div>
         </div>
         <div class="form-group">
+          <label class="col-sm-2 control-label">Genre du réalisateur</label>
+          <div class="col-sm-10">
+            <select name="genre" class="form-control" id="titleInput">
+              <option value="">Tous</option>
+              <option value="M">Masculin</option>
+              <option value="F">Féminin</option>
+            </select>
+          </div>
+        </div>
+        <div class="form-group">
           <div class="col-sm-offset-2 col-sm-10">
             <button type="submit" class="btn btn-default">Chercher</button>
           </div>
@@ -57,8 +70,64 @@
   </div>
 </div>
 
+<script>
+
+function displayResult(data){ 
+  console.log(data);
+
+   $("#searchResults").empty(); 
+  for(film_id in data.films){
+    var film = data.films[film_id];
+    var minutes = Math.floor(film.duration/60);
+    var d_min = (minutes%60);
+    if(d_min < 10){
+      d_min = '0'+d_min;
+    }
+    var duration = Math.floor(minutes/60)+":"+d_min;
+
+    var elt = "<tr>"+
+                "<td>"+film.title+"</td>"+
+                "<td>"+film.year+"</td>"+
+                "<td>"+film.first_name+" "+ film.last_name +"</td>"+
+                "<td>"+film.synopsis+"</td>"+
+                "<td>"+duration+"</td>"+
+              "</tr>";
+
+    $("#searchResults").append(elt);
+  }
+}
+
+function displayError(data){
+  console.log(data) 
+  $("#searchResults").empty(); 
+  $("#searchResults").html("<div class='alert alert-danger'>"+data.responseJSON.error+"</div>");
+}
+
+$(document).on("submit", "#movieSearchForm", function(){
+    var form = $(this);
+    var action = form.attr("action");
+    var method = form.attr("method");
+    var data = form.serialize();
+
+    $("#searchResults").empty(); 
+    $("#searchResults").html("Recherche en cours...");
+
+    $.ajax({
+      type: method,
+      url: action,
+      data: data,
+      dataType: "JSON",
+      success:  displayResult,
+      error: displayError
+    });
+    return false;
+});
+
+</script>
+
 <div class="results">
   <table class="table table-hover">
+    <thead>
     <tr>
       <th>
         Titre
@@ -67,12 +136,18 @@
         Année
       </th>
       <th>
+        Réalisateur
+      </th>
+      <th>
         Synopsis
       </th>
       <th>
         Durée
       </th>
     </tr>
+    </thead>
+
+    <tbody id="searchResults">
     <tr>
       <td>
         Matrix
@@ -87,7 +162,7 @@
         2h15
       </td>
     </tr>
-    
+    </tbody>
   </table>
 </div>
   

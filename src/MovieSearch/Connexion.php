@@ -8,9 +8,9 @@ class Connexion{
 
   private function __construct(){
     $config = new \Doctrine\DBAL\Configuration();
+    require_once("../../config/dbconf.php");
     $connectionParams = array(
-      'url' => 'mysql://supinternet:supinternet21@127.0.0.1/supinternet_moviesearch?charset=utf8mb4',
-
+      'url' => $db_param,
     );
     $this->conn = \Doctrine\DBAL\DriverManager::getConnection($connectionParams, $config);
   }
