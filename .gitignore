@@ -1,2 +1,5 @@
 vendor/*
 config/dbconf.php
+public/upload/*
+composer.lock
+composer.phar

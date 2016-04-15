@@ -80,4 +80,48 @@ class IndexController{
 
     return json_encode(["films" => $films, "query" => $sql, "parameters" => $parameters]);
   }
+
+
+  public function showAction($movie_id){
+    $conn = \MovieSearch\Connexion::getInstance();
+
+    $sql = "SELECT * FROM film 
+            WHERE id = :id ";
+    $stmt = $conn->prepare($sql);
+    $stmt->bindParam("id",$movie_id);
+    $stmt->execute();
+    
+
+    $film = $stmt->fetch();
+    $poster_src = $this->getImageUrl($movie_id);
+
+
+
+    include "singleFilm.php";
+  }
+
+  private function getImageUrl($id){
+    $public_path = "/upload/".$id.".jpg";
+    $has_poster = file_exists("../../public".$public_path);
+    if($has_poster){
+      return $public_path;
+    }else{
+      return "/img/default_poster.jpg";  
+    }
+    
+  }
+
+  public function uploadAction(){
+    var_dump($_POST);
+    var_dump($_FILES);
+    $film_id = $_POST['film_id'];
+    $src = $_FILES['poster_img']['tmp_name'];
+
+    $destination = "../../public/upload/".$film_id.".jpg";
+
+    move_uploaded_file($src, $destination);
+    
+    header("Location: /index/show/".$film_id);
+  }
+
 }
