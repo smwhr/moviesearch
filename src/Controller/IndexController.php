@@ -118,10 +118,28 @@ class IndexController{
     $src = $_FILES['poster_img']['tmp_name'];
 
     $destination = "../../public/upload/".$film_id.".jpg";
+    $destination_small = "../../public/upload/small_".$film_id.".jpg";
 
     move_uploaded_file($src, $destination);
+    $this->createApercu($destination, $destination_small, 100);
+
     
     header("Location: /index/show/".$film_id);
+  }
+
+
+  private function createApercu($filename, $destination, $dwidth){
+    $source = imagecreatefromjpeg($filename);
+    $w = imagesx($source);
+    $h = imagesy($source);
+
+    $dheight = floor(($dwidth / $w)* $h);
+    $virtual = imagecreatetruecolor($dwidth, $dheight);
+
+    imagecopyresampled($virtual, $source, 0, 0, 0, 0, $dwidth, $dheight, $w, $h);
+
+    imagejpeg($virtual, $destination);
+
   }
 
 }
