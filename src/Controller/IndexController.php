@@ -127,8 +127,16 @@ class IndexController{
     header("Location: /index/show/".$film_id);
   }
 
+  public function thumbAction($params){
+      list($film_id, $size) = explode("/", $params);
+      header('Content-Type: image/jpeg');
+      $thumb = "../../public/upload/".$film_id.".jpg";
+  
+      echo $this->createApercu($thumb,null, $size, false);
+  }
 
-  private function createApercu($filename, $destination, $dwidth){
+
+  private function createApercu($filename, $destination, $dwidth, $save = true){
     $source = imagecreatefromjpeg($filename);
     $w = imagesx($source);
     $h = imagesy($source);
@@ -138,7 +146,11 @@ class IndexController{
 
     imagecopyresampled($virtual, $source, 0, 0, 0, 0, $dwidth, $dheight, $w, $h);
 
-    imagejpeg($virtual, $destination);
+    if($save){
+      imagejpeg($virtual, $destination);
+    }else{
+      return imagejpeg($virtual);
+    }
 
   }
 

@@ -6,7 +6,7 @@
 </head>
 <body>
 
-<img src="<?php echo $poster_src ;?>" 
+<img src="<?php echo "/index/thumb/".$film['id']."/400" ;?>" 
      style="width:200px;"/>
 
 <h1><?php echo $film["title"]?></h1>
